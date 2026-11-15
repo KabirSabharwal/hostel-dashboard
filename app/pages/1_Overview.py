@@ -11,11 +11,9 @@ import pandas as pd
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
-if "app" in sys.modules:
-    del sys.modules["app"]
-from app import db
-from app import charts
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+import db
+import charts
 
 
 def apply_filters(df, date_col="date"):

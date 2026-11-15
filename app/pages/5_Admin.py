@@ -12,10 +12,8 @@ import sys
 import os
 from datetime import date, timedelta
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", ".."))
-if "app" in sys.modules:
-    del sys.modules["app"]
-from app import db
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+import db
 
 
 def render():
