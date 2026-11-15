@@ -1,0 +1,3 @@
+data/hostel.db
+__pycache__/
+.streamlit/secrets.toml
