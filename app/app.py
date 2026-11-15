@@ -72,14 +72,15 @@ st.session_state["filter_occupancy"] = occupancy_selection
 
 # ---------------------------------------------------------------------------
 # Navigation — st.navigation is the standard Streamlit multipage API
+# Page paths are relative to this file's directory (app/)
 # ---------------------------------------------------------------------------
 pg = st.navigation({
     "Overview": [
-        st.Page("app/pages/1_Overview.py", title="Overview", icon="📊"),
-        st.Page("app/pages/2_Rooms.py", title="Rooms", icon="🏠"),
-        st.Page("app/pages/3_Revenue.py", title="Revenue", icon="💰"),
-        st.Page("app/pages/4_Weekday.py", title="Weekday", icon="📅"),
-        st.Page("app/pages/5_Admin.py", title="Admin", icon="➕"),
+        st.Page("pages/1_Overview.py", title="Overview", icon="📊"),
+        st.Page("pages/2_Rooms.py", title="Rooms", icon="🏠"),
+        st.Page("pages/3_Revenue.py", title="Revenue", icon="💰"),
+        st.Page("pages/4_Weekday.py", title="Weekday", icon="📅"),
+        st.Page("pages/5_Admin.py", title="Admin", icon="➕"),
     ]
 })
 
