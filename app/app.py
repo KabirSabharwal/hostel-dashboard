@@ -18,6 +18,11 @@ PARENT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PARENT not in sys.path:
     sys.path.insert(0, PARENT)
 
+# Remove the __main__ app module from sys.modules so that pages can import
+# the app package (with __init__.py) instead of getting this __main__ file.
+if "app" in sys.modules:
+    del sys.modules["app"]
+
 PAGES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pages")
 
 PAGE_FILES = {
@@ -109,4 +114,9 @@ st.session_state["filter_block"] = block_selection
 st.session_state["filter_gender"] = gender_selection
 st.session_state["filter_occupancy"] = occupancy_selection
 
-page.render()
+try:
+    page.render()
+except Exception as e:
+    st.error(f"Error loading page: {e}")
+    import traceback
+    st.code(traceback.format_exc())
