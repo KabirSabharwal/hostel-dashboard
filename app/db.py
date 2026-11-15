@@ -241,7 +241,7 @@ def load_mess_by_weekday():
         recent AS (
             SELECT *
             FROM mess_attendance m, max_date
-            WHERE date(m.date) >= date(max_d.max_d, '-1 month')
+            WHERE date(m.date) >= date(max_date.max_d, '-1 month')
         )
         SELECT
             CAST(strftime('%w', date) AS INTEGER) AS weekday,

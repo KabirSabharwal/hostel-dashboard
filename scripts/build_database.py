@@ -46,6 +46,15 @@ CREATE TABLE rooms (
     semester_fee   REAL
 );
 
+CREATE TABLE students (
+    student_id     TEXT PRIMARY KEY,
+    student_name   TEXT,
+    gender         TEXT,
+    email          TEXT,
+    phone          TEXT,
+    created_at     DATE
+);
+
 CREATE TABLE bookings (
     booking_id          TEXT PRIMARY KEY,
     student_id          TEXT,
@@ -111,6 +120,8 @@ def load_csv(table, filename, fields):
 
 load_csv("rooms", "rooms.csv",
          ["room_number", "room_type", "total_beds", "block", "gender", "semester_fee"])
+load_csv("students", "students.csv",
+         ["student_id", "student_name", "gender", "email", "phone", "created_at"])
 load_csv("bookings", "bookings.csv",
          ["booking_id", "student_id", "student_name", "room_number",
           "checkin_date", "checkout_date", "booking_status", "fee_payment_status"])
@@ -202,7 +213,7 @@ print("  created indexes")
 # 5. Verification
 # ---------------------------------------------------------------------------
 print("\nVERIFICATION")
-tables = ["rooms", "bookings", "daily_occupancy", "mess_attendance", "payments", "expenses"]
+tables = ["rooms", "students", "bookings", "daily_occupancy", "mess_attendance", "payments", "expenses"]
 counts = {}
 for t in tables:
     cur.execute(f"SELECT COUNT(*) FROM {t}")
