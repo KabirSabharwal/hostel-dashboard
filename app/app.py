@@ -10,6 +10,13 @@ Run:  streamlit run app/app.py   (from the hostel-dashboard folder)
 import streamlit as st
 import importlib.util
 import os
+import sys
+
+# Ensure the project root is on sys.path so `from app import db` works
+# when app.py is run as __main__ (otherwise app.py shadows the app package)
+PARENT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PARENT not in sys.path:
+    sys.path.insert(0, PARENT)
 
 PAGES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pages")
 
@@ -59,27 +66,27 @@ conn.close()
 default_months = months[-3:] if months else []
 
 month_selection = st.sidebar.multiselect(
-    "Month", options=months, default=default_months
+    "Month", options=months, default=default_months, key="sb_month"
 )
 
 room_type_selection = st.sidebar.multiselect(
     "Room type", options=["single", "double", "triple"],
-    default=["single", "double", "triple"]
+    default=["single", "double", "triple"], key="sb_room_type"
 )
 
 block_selection = st.sidebar.multiselect(
     "Hostel block", options=["A", "B", "C"],
-    default=["A", "B", "C"]
+    default=["A", "B", "C"], key="sb_block"
 )
 
 gender_selection = st.sidebar.multiselect(
     "Gender", options=["boys", "girls"],
-    default=["boys", "girls"]
+    default=["boys", "girls"], key="sb_gender"
 )
 
 occupancy_selection = st.sidebar.multiselect(
     "Occupancy status", options=["occupied", "vacant"],
-    default=["occupied", "vacant"]
+    default=["occupied", "vacant"], key="sb_occupancy"
 )
 
 st.sidebar.divider()
