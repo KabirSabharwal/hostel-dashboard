@@ -109,3 +109,6 @@ def render():
         )
     else:
         st.info("No expense data available.")
+
+
+render()

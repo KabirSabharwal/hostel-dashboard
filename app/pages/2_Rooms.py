@@ -88,3 +88,6 @@ def render():
         st.caption("🔴 Pink rows have at least one vacant bed.")
     else:
         st.info("No room data available.")
+
+
+render()

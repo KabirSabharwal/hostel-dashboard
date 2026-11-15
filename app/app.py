@@ -1,47 +1,15 @@
 """
 app/app.py — Streamlit entry point.
 
-Sets page config, draws the shared sidebar filters, and routes to the 5 pages:
-  1_Overview, 2_Rooms, 3_Revenue, 4_Weekday, 5_Admin
+Sets page config, draws the shared sidebar filters, and routes to the 5 pages
+using st.navigation (the modern Streamlit multipage API).
 
 Run:  streamlit run app/app.py   (from the hostel-dashboard folder)
 """
 
 import streamlit as st
-import importlib.util
 import os
-import sys
-
-# Ensure the project root is on sys.path so `from app import db` works
-# when app.py is run as __main__ (otherwise app.py shadows the app package)
-PARENT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PARENT not in sys.path:
-    sys.path.insert(0, PARENT)
-
-# Remove the __main__ app module from sys.modules so that pages can import
-# the app package (with __init__.py) instead of getting this __main__ file.
-if "app" in sys.modules:
-    del sys.modules["app"]
-
-PAGES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pages")
-
-PAGE_FILES = {
-    "1 — Overview": "1_Overview.py",
-    "2 — Rooms": "2_Rooms.py",
-    "3 — Revenue": "3_Revenue.py",
-    "4 — Weekday Analysis": "4_Weekday.py",
-    "5 — Admin": "5_Admin.py",
-}
-
-
-def load_page(filename):
-    """Load a page module by file path (filenames start with numbers)."""
-    path = os.path.join(PAGES_DIR, filename)
-    spec = importlib.util.spec_from_file_location("page_module", path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
+import sqlite3
 
 st.set_page_config(
     page_title="Hostel Occupancy & Revenue Dashboard",
@@ -57,8 +25,6 @@ st.caption("Synthetic data for demonstration — no real student data is used.")
 # ---------------------------------------------------------------------------
 st.sidebar.header("Filters")
 
-# Month filter — multi-select of available months
-import sqlite3
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE, "data", "hostel.db")
 conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
@@ -97,26 +63,24 @@ occupancy_selection = st.sidebar.multiselect(
 st.sidebar.divider()
 st.sidebar.caption("Filters apply to all pages below.")
 
-# ---------------------------------------------------------------------------
-# Page router
-# ---------------------------------------------------------------------------
-PAGES = {}
-for label, filename in PAGE_FILES.items():
-    PAGES[label] = load_page(filename)
-
-selection = st.sidebar.radio("Go to", list(PAGES.keys()))
-page = PAGES[selection]
-
-# Pass the filter values into session state so each page can read them
+# Store filter values in session state so pages can read them
 st.session_state["filter_month"] = month_selection
 st.session_state["filter_room_type"] = room_type_selection
 st.session_state["filter_block"] = block_selection
 st.session_state["filter_gender"] = gender_selection
 st.session_state["filter_occupancy"] = occupancy_selection
 
-try:
-    page.render()
-except Exception as e:
-    st.error(f"Error loading page: {e}")
-    import traceback
-    st.code(traceback.format_exc())
+# ---------------------------------------------------------------------------
+# Navigation — st.navigation is the standard Streamlit multipage API
+# ---------------------------------------------------------------------------
+pg = st.navigation({
+    "Overview": [
+        st.Page("app/pages/1_Overview.py", title="Overview", icon="📊"),
+        st.Page("app/pages/2_Rooms.py", title="Rooms", icon="🏠"),
+        st.Page("app/pages/3_Revenue.py", title="Revenue", icon="💰"),
+        st.Page("app/pages/4_Weekday.py", title="Weekday", icon="📅"),
+        st.Page("app/pages/5_Admin.py", title="Admin", icon="➕"),
+    ]
+})
+
+pg.run()

@@ -63,3 +63,6 @@ def render():
         "This is normal for college hostels and is already baked into the "
         "synthetic data pattern."
     )
+
+
+render()

@@ -133,3 +133,6 @@ def render():
             LIMIT 5
         """)
         st.dataframe(recent_mess, use_container_width=True, hide_index=True)
+
+
+render()

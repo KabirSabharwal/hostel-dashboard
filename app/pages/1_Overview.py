@@ -87,3 +87,6 @@ def render():
         )
     else:
         st.info("No revenue data for the selected filters.")
+
+
+render()
