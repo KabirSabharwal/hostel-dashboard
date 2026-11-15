@@ -59,27 +59,27 @@ conn.close()
 default_months = months[-3:] if months else []
 
 month_selection = st.sidebar.multiselect(
-    "Month", options=months, default=default_months, key="filter_month"
+    "Month", options=months, default=default_months
 )
 
 room_type_selection = st.sidebar.multiselect(
     "Room type", options=["single", "double", "triple"],
-    default=["single", "double", "triple"], key="filter_room_type"
+    default=["single", "double", "triple"]
 )
 
 block_selection = st.sidebar.multiselect(
     "Hostel block", options=["A", "B", "C"],
-    default=["A", "B", "C"], key="filter_block"
+    default=["A", "B", "C"]
 )
 
 gender_selection = st.sidebar.multiselect(
     "Gender", options=["boys", "girls"],
-    default=["boys", "girls"], key="filter_gender"
+    default=["boys", "girls"]
 )
 
 occupancy_selection = st.sidebar.multiselect(
     "Occupancy status", options=["occupied", "vacant"],
-    default=["occupied", "vacant"], key="filter_occupancy"
+    default=["occupied", "vacant"]
 )
 
 st.sidebar.divider()
