@@ -51,7 +51,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE, "data", "hostel.db")
 conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
 months = [r[0] for r in conn.execute(
-    "SELECT DISTINCT strftime('%Y-%m', date) FROM daily_occupancy ORDER BY year_month"
+    "SELECT DISTINCT strftime('%Y-%m', date) FROM daily_occupancy ORDER BY strftime('%Y-%m', date)"
 )]
 conn.close()
 
